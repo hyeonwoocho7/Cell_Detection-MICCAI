@@ -1,11 +1,9 @@
-from datetime import datetime
-from PIL import Image
 import torch
 import numpy as np
 from pathlib import Path
 import cv2
 from Detection.networks import UNet
-from Detection.utils import local_maxima, make_pgt, optimum, target_peaks_gen, remove_outside_plot, show_res
+from Detection.utils import local_maxima, make_pgt, optimum, target_peaks_gen, remove_outside_plot
 import argparse
 import os
 
@@ -93,12 +91,10 @@ class PredictFmeasure(Predict):
         self.gt_path = args.input_path / Path("gt")
 
         self.save_gt_path = args.output_path / Path("gt")
-        #self.save_pgt_path = args.output_path / Path("pgt")
         self.save_error_path = args.output_path / Path("error")
         self.save_txt_path = args.output_path / Path("f-measure.txt")
 
         self.save_gt_path.mkdir(parents=True, exist_ok=True)
-        #self.save_pgt_path.mkdir(parents=True, exist_ok=True)
         self.save_error_path.mkdir(parents=True, exist_ok=True)
 
         self.peak_thresh = 100
@@ -111,10 +107,8 @@ class PredictFmeasure(Predict):
 
 
     def cal_tp_fp_fn(self, ori, gt_img, pre_img, i, ori_path):
-        #정답이미지에서 픽셀255인 좌표찾기
         #gt = target_peaks_gen((gt_img).astype(np.uint8))
         gt = local_maxima(gt_img, self.peak_thresh, self.dist_peak)
-        #예측 이미지에서 밝기가 가장 밝은 곳의 중심좌표찾기
         res = local_maxima(pre_img, self.peak_thresh, self.dist_peak)
         associate_id = optimum(gt, res, self.dist_threshold)
 
@@ -124,20 +118,13 @@ class PredictFmeasure(Predict):
         res_final, overdetection_id = remove_outside_plot(
             res, associate_id, 1, pre_img.shape
         )
-        # show_res(
-        #     ori,
-        #     gt,
-        #     res,
-        #     no_detected_id,
-        #     overdetection_id,
-        #     path=str(self.save_error_path / Path(os.path.basename(ori_path))),
-        # )
+
 
 
         cv2.imwrite(str(self.save_pred_path / Path(os.path.basename(ori_path))), pre_img)
         cv2.imwrite(str(self.save_ori_path / Path(os.path.basename(ori_path))), ori)
         cv2.imwrite(str(self.save_gt_path / Path(os.path.basename(ori_path))), gt_img)
-        #cv2.imwrite(str(self.save_pgt_path / Path(os.path.basename(ori_path))), pgt_img)
+
 
 
         #truepositive
@@ -167,7 +154,6 @@ class PredictFmeasure(Predict):
             gt_img = cv2.imread(str(b[1]), 0)
 
             pre_img = self.pred(ori)
-            #pgt_img = make_pgt(pre_img, threshold=200, dist=2)
             self.cal_tp_fp_fn(ori, gt_img, pre_img,  i, str(b[0]))
         if self.tps == 0:
             recall = 0
@@ -200,4 +186,5 @@ def f_score(step, test_path):
     pred = PredictFmeasure(args)
 
     pred.main()
+
 
