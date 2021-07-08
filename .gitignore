@@ -1,0 +1,15 @@
+__pycache__
+.idea
+Data
+All_Result
+Model
+Result
+a.py
+b.py
+annotation.py
+conf.tif
+plot_probability.py
+visual_Entropy.py
+visul_imgs_2.py
+Visual_imgs.py
+Detection/utils/conf.tif
