@@ -13,3 +13,5 @@ visual_Entropy.py
 visul_imgs_2.py
 Visual_imgs.py
 Detection/utils/conf.tif
+Detection/__pycache__/
+Discriminator/__pycache__/
