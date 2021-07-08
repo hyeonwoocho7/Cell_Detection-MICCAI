@@ -8,9 +8,7 @@ import random
 
 
 def gaussian(x, sigma, mu):
-    # 分散共分散行列の行列式
     det = np.linalg.det(sigma)
-    # 分散共分散行列の逆行列
     inv = np.linalg.inv(sigma)
     n = x.ndim
     return np.exp(-np.diag((x - mu) @ inv @ (x - mu).T) / 2.0) / (np.sqrt((2 * np.pi) ** n * det))
@@ -45,8 +43,6 @@ def generation_train(ori_paths, gt_paths, save_train_ori, save_train_good, save_
             center = local_maxima(mask, threshold=200, dist=2)
             # id list
             k = list(range(0, len(center)))
-            # id 리스트에서 랜덤으로 선택
-            # 그 전에 랜덤을 선택할 세포 갯수를 랜덤으로 선
             random_id = sorted(random.sample(k, random.randint(0, len(k))))
             # sum of distance
             Dis = 0
@@ -126,7 +122,6 @@ def generation_train(ori_paths, gt_paths, save_train_ori, save_train_good, save_
                     if count == len(center):
                         plus_center = (np.append(plus_center, [[x, y]], axis=0))
             new_center = plus_center
-            # 같으면 그냥 세포 0으로 만들
             if np.array_equal(new_center, center):
                 cv2.imwrite(
                     str(save_train_bad.joinpath("{:05d}.tif".format(frame))),
@@ -151,7 +146,7 @@ def generation_train(ori_paths, gt_paths, save_train_ori, save_train_good, save_
                     gaus.astype(np.uint8))
             frame += 1
 
-def Dataaugmentation(step, seed, save, Det_path):
+def Dataaugmentation(step, seed, save, Det_Data_path):
     set_seed(seed)
 
     save_train = save
@@ -164,4 +159,4 @@ def Dataaugmentation(step, seed, save, Det_path):
     save_train_good.mkdir(parents=True, exist_ok=True)
     save_train_bad.mkdir(parents=True, exist_ok=True)
 
-    data_augmentation(Det_path, save_train_ori, save_train_good, save_train_bad, step)
+    data_augmentation(Det_Data_path, save_train_ori, save_train_good, save_train_bad, step)
