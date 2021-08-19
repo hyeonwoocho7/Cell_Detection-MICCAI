@@ -140,8 +140,8 @@ class Predict:
         ori_paths = sorted(self.ori_path.glob("*.tif"))
         pgt_paths = sorted(self.pgt_path.glob("*.tif"))
         for i, (ori_path, pred_path) in enumerate(zip(ori_paths, pgt_paths)):
-            ori = cv2.imread(str(ori_path), 0)
-            pred = cv2.imread(str(pred_path), 0)
+            ori = cv2.imread(str(self.Detection_ori) + '/' + os.path.basename(ori_path), 0)
+            pred = cv2.imread(str(self.Detection_pgt) + '/' + os.path.basename(pred_path), 0)
             self.pred(ori, pred, ori_path)
         f = open(self.save_entropy, 'r')
         data = f.read()
@@ -165,8 +165,8 @@ class Predict:
             myfile.write('\n'.join(positive))
 
         for k, path in enumerate(paths[:int(0.1*len(paths))]):
-            ori = cv2.imread(str(self.ori_path / Path(os.path.basename(path))),0)
-            pgt = cv2.imread(str(self.pgt_path / Path(os.path.basename(path))),0)
+            ori = cv2.imread(str(self.Detection_ori / Path(os.path.basename(path))), 0)
+            pgt = cv2.imread(str(self.Detection_pgt / Path(os.path.basename(path))), 0)
 
             cv2.imwrite(str(self.select_ori / Path(os.path.basename(path))), ori)
             cv2.imwrite(str(self.select_pgt / Path(os.path.basename(path))), pgt)
