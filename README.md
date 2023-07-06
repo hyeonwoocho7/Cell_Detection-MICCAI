@@ -1,7 +1,26 @@
-# Cell_Detection-MICCAI
-Official code of "Cell Detection in Domain Shift Problem Using Pseudo-Cell-Position Heatmap", Miccai 2021
+# Cell Detection for Domain Adaptation
+This is Official code of "Cell Detection in Domain Shift Problem Using Pseudo-Cell-Position Heatmap", Miccai 2021
 
-## Directory Structure
+# Requirements
+- Python3.7
+- PyTorch
+- OpenCV
+
+# Train
+
+## Example
+```
+$ python3 main.py --random_seed ${random_seed} --test_path ${test_path} --target_path ${target_path} --source_path ${source_path} --steps ${numbers of domain adaptation}
+```
+
+
+For implementation, your directory have to be structure like below.
+
+<details>
+<summary>Directory Structure</summary>
+
+
+# Directory Structure
 ```
 ├── All_fscore.py
 ├── Data
@@ -86,3 +105,17 @@ Official code of "Cell Detection in Domain Shift Problem Using Pseudo-Cell-Posit
 │   └── Discriminator
 │       └── step0
 ```
+
+</details>
+
+## Citation
+If you find the code useful for your research, please cite:
+```
+@inproceedings{cho2021cell,
+  title={Cell detection in domain shift problem using pseudo-cell-position heatmap},
+  author={Cho, Hyeonwoo and Nishimura, Kazuya and Watanabe, Kazuhide and Bise, Ryoma},
+  booktitle={Medical Image Computing and Computer Assisted Intervention--MICCAI 2021: 24th International Conference, Strasbourg, France, September 27--October 1, 2021, Proceedings, Part VIII 24},
+  pages={384--394},
+  year={2021},
+  organization={Springer}
+}
